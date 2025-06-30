@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import { accessLogger } from './src/common/logger';
 export * from './src/common/logger';
 
-export function autoLogExpressRequests(app) {
+export function autoLogExpressRequests(app: { use: (...args: any[]) => void }) {
   app.use(
     morgan('combined', {
       stream: {
