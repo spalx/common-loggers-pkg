@@ -1,5 +1,5 @@
 import { ZodError, ZodIssue, ZodSchema } from 'zod';
-import { BadRequestError } from '../types/errors';
+import { BadRequestError } from './errors';
 
 interface ValidationErrorDetail {
   field: string;
