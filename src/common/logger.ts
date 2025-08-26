@@ -1,26 +1,21 @@
 import winston, { Logger, LoggerOptions } from 'winston';
 import 'winston-daily-rotate-file';
 
-function buildLogger(config: LoggerOptions): Logger {
-  return winston.createLogger(config);
-}
-
-function lazyLogger(config: LoggerOptions): Logger {
+function lazyLogger(configFactory: () => LoggerOptions): Logger {
   let realLogger: Logger | null = null;
 
   return new Proxy({} as Logger, {
     get(_, prop: keyof Logger) {
       if (!realLogger) {
-        realLogger = buildLogger(config);
+        realLogger = winston.createLogger(configFactory());
       }
-      // Use type assertion to satisfy TS
       const value = (realLogger as any)[prop];
       return typeof value === 'function' ? value.bind(realLogger) : value;
     },
   });
 }
 
-const logger = lazyLogger({
+const logger = lazyLogger(() => ({
   format: winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
@@ -43,9 +38,9 @@ const logger = lazyLogger({
     }),
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
   ],
-});
+}));
 
-const kafkaLogger = lazyLogger({
+const kafkaLogger = lazyLogger(() => ({
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
@@ -63,9 +58,9 @@ const kafkaLogger = lazyLogger({
       maxFiles: '7d',
     }),
   ],
-});
+}));
 
-const httpLogger = lazyLogger({
+const httpLogger = lazyLogger(() => ({
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
@@ -83,9 +78,9 @@ const httpLogger = lazyLogger({
       maxFiles: '5d',
     }),
   ],
-});
+}));
 
-const accessLogger = lazyLogger({
+const accessLogger = lazyLogger(() => ({
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
@@ -103,6 +98,6 @@ const accessLogger = lazyLogger({
       maxFiles: '5d',
     }),
   ],
-});
+}));
 
 export { logger, kafkaLogger, httpLogger, accessLogger };
