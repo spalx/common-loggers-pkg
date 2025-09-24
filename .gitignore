@@ -12,7 +12,6 @@ lerna-debug.log*
 node_modules
 dist
 coverage
-package-lock.json
 .env
 
 # Editor directories and files
