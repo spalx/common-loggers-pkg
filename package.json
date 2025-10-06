@@ -1,19 +1,17 @@
 {
   "name": "common-loggers-pkg",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
   },
   "dependencies": {
-    "morgan": "^1.10.0",
-    "winston": "^3.17.0",
+    "winston": "^3.18.3",
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^22.15.21",
-    "typescript": "^5.3.3"
+    "@types/node": "^24.7.0",
+    "typescript": "^5.9.3"
   }
 }

@@ -80,24 +80,4 @@ const httpLogger = lazyLogger(() => ({
   ],
 }));
 
-const accessLogger = lazyLogger(() => ({
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.printf(({ timestamp, level, message, ...meta }) => {
-      return `[${timestamp}][${level.toUpperCase()}] ${message}${
-        Object.keys(meta).length ? ': ' + JSON.stringify(meta) : ''
-      }`;
-    })
-  ),
-  transports: [
-    new winston.transports.DailyRotateFile({
-      filename: 'logs/access-%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      zippedArchive: true,
-      maxSize: '100m',
-      maxFiles: '5d',
-    }),
-  ],
-}));
-
-export { logger, kafkaLogger, httpLogger, accessLogger };
+export { logger, kafkaLogger, httpLogger };
