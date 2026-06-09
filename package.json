@@ -1,5 +1,5 @@
 {
-  "name": "common-loggers-pkg",
+  "name": "@spalx/common-loggers-pkg",
   "version": "1.0.5",
   "main": "dist/index.js",
   "scripts": {
